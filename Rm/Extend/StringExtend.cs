@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
 using Rm.Enum;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -17,6 +19,17 @@ namespace Rm.Extend
     /// </summary>
     public static class StringExtend
     {
+        /// <summary>
+        /// 通过默认浏览器打开链接
+        /// </summary>
+        /// <param name="url"></param>
+        public static void OpenByBrowser(this string url)
+        {
+            var key = Registry.ClassesRoot.OpenSubKey(@"http\shell\open\command\");
+            string defaultWebBrowserPath = key.GetValue("").ToString().Split(' ')[0];
+            Process.Start(defaultWebBrowserPath, url);
+        }
+
         /// <summary>
         /// 判断网络文件是否存在
         /// </summary>
